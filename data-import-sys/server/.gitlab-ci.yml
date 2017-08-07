@@ -1,0 +1,27 @@
+before_script:
+  - echo "begin to run script"
+  
+variables:
+
+
+stages:
+  - dump
+  - build 
+  - install 
+  - test
+  - deploy
+  - trigger
+
+dump:echo:
+  stage: dump
+  script:
+    - echo "dump"
+
+build:dev:
+  stage: build
+  script:
+    - echo "build"
+  only: 
+   - develop
+   
+   

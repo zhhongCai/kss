@@ -1,0 +1,115 @@
+variables:
+  PRI_REGISTRY: 192.168.250.75:5000
+  TOPIDEA_IMAGE: linesum/lrfs/topidea/web-image
+  MAVEN_REPOS: $CI_PROJECT_NAME-maven_repos
+  DOCKER_BUILDER: $CI_PROJECT_NAME-builder-$CI_COMMIT_REF_NAME
+  MAVEN_SERVER_TARGET: $CI_PROJECT_NAME-server_target-$CI_COMMIT_REF_NAME
+  MAVEN_CLIENT_TARGET: $CI_PROJECT_NAME-client_target-$CI_COMMIT_REF_NAME
+  MAVEN_TARGET: $CI_PROJECT_NAME-target-$CI_COMMIT_REF_NAME
+  DOCKER_CLIENT_BUILDER: topidea-client-builder-$CI_COMMIT_REF_NAME
+before_script:
+  - echo "begin to run script"
+
+stages:
+  - dump
+  - build
+  - install
+  - test
+  - deploy
+  - trigger
+  
+dump:master:echo:
+  stage: dump
+  script:
+    - echo $CI_COMMIT_REF_NAME
+    - echo $CI_PROJECT_NAME
+    
+sample:dist:build:
+  stage: build
+  before_script: 
+    - docker stop $DOCKER_BUILDER && docker rm $DOCKER_BUILDER && docker volume remove $MAVEN_TARGET && docker volume remove $MAVEN_SERVER_TARGET && docker volume remove $MAVEN_CLIENT_TARGET
+  script:
+    # app编译打包
+    - export DOCKER_IMAGE=$PRI_REGISTRY/$TOPIDEA_IMAGE:$CI_COMMIT_REF_NAME
+    - docker pull $PRI_REGISTRY/linesum/devops/maven:3-jdk-8
+    - docker volume create $MAVEN_REPOS
+    - docker volume create $MAVEN_SERVER_TARGET
+    - docker volume create $MAVEN_CLIENT_TARGET
+    - docker run --name $DOCKER_BUILDER -v $MAVEN_REPOS:/root/.m2 -v "$(pwd)":/usr/src/mymaven -v $MAVEN_TARGET:/usr/src/mymaven/target -v $MAVEN_SERVER_TARGET:/usr/src/mymaven/server/target -v $MAVEN_CLIENT_TARGET:/usr/src/mymaven/client/target -w /usr/src/mymaven $PRI_REGISTRY/linesum/devops/maven:3-jdk-8 mvn package -Dpackage.bin=true -Dmaven.test.skip=true
+#    - docker cp $DOCKER_BUILDER:/usr/src/mymaven/server/target/site/jacoco ./jacoco
+    - docker cp $DOCKER_BUILDER:/usr/src/mymaven/server/target/docker/app.jar ./server/docker/app.jar
+    # 抛出代码覆盖率内容
+#    - cat jacoco/index.html
+    # test dockerfile is ok. and remove it 
+    - docker build -t $DOCKER_IMAGE --pull ./server/docker
+    - docker rmi $DOCKER_IMAGE
+  after_script:
+    # 关闭编译的容器、和对应的target挂载的数据卷
+    - docker stop $DOCKER_BUILDER && docker rm $DOCKER_BUILDER && docker volume remove $MAVEN_TARGET && docker volume remove $MAVEN_SERVER_TARGET && docker volume remove $MAVEN_CLIENT_TARGET
+  
+  except:
+    - develop
+    - master
+    - tags
+    
+
+sample:dist:build:dev:
+  stage: build
+  before_script:
+    - docker stop $DOCKER_BUILDER && docker rm $DOCKER_BUILDER && docker volume remove $MAVEN_TARGET && docker volume remove $MAVEN_SERVER_TARGET && docker volume remove $MAVEN_CLIENT_TARGET
+  script:
+    # app编译打包
+    - export TAG=$CI_BUILD_TAG
+    - if [ -z "${CI_BUILD_TAG}" ]; then export TAG=dev; fi    
+    - export DOCKER_IMAGE=$PRI_REGISTRY/$TOPIDEA_IMAGE:$TAG
+    - docker pull $PRI_REGISTRY/linesum/maven:3-jdk-8
+    - docker volume create $MAVEN_REPOS
+    - docker volume create $MAVEN_SERVER_TARGET
+    - docker volume create $MAVEN_CLIENT_TARGET
+    - docker run --name $DOCKER_BUILDER -v $MAVEN_REPOS:/root/.m2 -v "$(pwd)":/usr/src/mymaven -v $MAVEN_TARGET:/usr/src/mymaven/target -v $MAVEN_SERVER_TARGET:/usr/src/mymaven/server/target -v $MAVEN_CLIENT_TARGET:/usr/src/mymaven/client/target -w /usr/src/mymaven $PRI_REGISTRY/linesum/devops/maven:3-jdk-8 mvn package -Dpackage.bin=true -Dmaven.test.skip=true
+#    - docker cp $DOCKER_BUILDER:/usr/src/mymaven/server/target/site/jacoco ./jacoco
+    - docker cp $DOCKER_BUILDER:/usr/src/mymaven/server/target/docker/app.jar ./server/docker/app.jar
+    - docker build -t $DOCKER_IMAGE --build-arg CONT_IMG_VER=$TAG --pull ./server/docker
+    # 抛出代码覆盖率内容
+#    - cat jacoco/index.html
+    - docker push $DOCKER_IMAGE
+  after_script:
+    # 关闭编译的容器
+    - docker stop $DOCKER_BUILDER && docker rm $DOCKER_BUILDER && docker volume remove $MAVEN_TARGET && docker volume remove $MAVEN_SERVER_TARGET && docker volume remove $MAVEN_CLIENT_TARGET
+  only:
+    - develop
+    - tags
+    
+
+web:dist:deploy:tag:
+  stage: deploy
+  script: 
+    - docker tag $PRI_REGISTRY/$TOPIDEA_IMAGE:$CI_BUILD_TAG $PRI_REGISTRY/$TOPIDEA_IMAGE
+    - docker tag $PRI_REGISTRY/$TOPIDEA_IMAGE:$CI_BUILD_TAG $PRI_REGISTRY/$TOPIDEA_IMAGE:qa
+    - docker push $PRI_REGISTRY/$TOPIDEA_IMAGE:$CI_BUILD_TAG
+    - docker push $PRI_REGISTRY/$TOPIDEA_IMAGE:qa
+    - docker push $PRI_REGISTRY/$TOPIDEA_IMAGE
+  only:
+    - tags   
+
+sample:dist:qa:trigger:
+  stage: trigger
+  script:
+    - curl -X POST -F token=a2618b17617874a8375db81f7fb46b -F ref=develop -F variables[TRIGGER_QA]=true -F variables[SERVICE_WEB_TAG]=$CI_BUILD_TAG http://inter-devops-4.linesum.com:8989/api/v4/projects/11/trigger/pipeline
+  only:
+    - tags   
+
+sample:dist:develop:install:
+  stage: install
+  script:
+    - docker push $PRI_REGISTRY/$TOPIDEA_IMAGE:dev
+  only:
+    - develop
+
+sample:dist:develop:trigger:
+  stage: trigger
+  script:
+    - curl -X POST -F token=a2618b17617874a8375db81f7fb46b -F ref=develop http://inter-devops-4.linesum.com:8989/api/v4/projects/11/trigger/pipeline
+
+  only:
+    - develop

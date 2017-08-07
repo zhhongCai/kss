@@ -1,0 +1,70 @@
+<!-- 参考 https://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-logging.html -->
+<configuration scan="true" scanPeriod="60 seconds" debug="false">
+    <springProfile name="local">
+        <include resource="org/springframework/boot/logging/logback/base.xml"/>
+        <property name="LOG_FILE" value="${LOG_PATH:-${LOG_TEMP:-${java.io.tmpdir:-/tmp}}}/info.log}"/>
+        <include resource="org/springframework/boot/logging/logback/file-appender.xml"/>
+        <root level="INFO">
+            <appender-ref ref="FILE"/>
+        </root>
+    </springProfile>
+
+    <springProfile name="!local">
+        <!-- 配置参数请参考 http://logback.qos.ch/manual/appenders.html -->
+        <!-- 控制台输出配置      -->
+        <appender name="Console" class="ch.qos.logback.core.ConsoleAppender">
+            <encoder>
+                <pattern>%d [%thread] %-5level %logger{0} - %msg%n</pattern>
+            </encoder>
+
+            <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+                <level>INFO</level>
+            </filter>
+        </appender>
+
+        <!-- 滚动式文件日志配置     -->
+        <appender name="RollingFile" class="ch.qos.logback.core.rolling.RollingFileAppender">
+            <File>${LOG_PATH:-${LOG_TEMP:-${java.io.tmpdir:-/tmp}}}/info.log</File>
+            <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+                <!-- Daily rollover (at midnight)-->
+                <fileNamePattern>${LOG_PATH:-${LOG_TEMP:-${java.io.tmpdir:-/tmp}}}/info.%d{yyyy-MM-dd}.%i.log
+                </fileNamePattern>
+                <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                    <maxFileSize>1GB</maxFileSize>
+                </timeBasedFileNamingAndTriggeringPolicy>
+                <maxHistory>30</maxHistory>
+            </rollingPolicy>
+            <encoder>
+                <pattern>%d [%thread] %-5level %logger{0} - %msg%n%ex</pattern>
+            </encoder>
+        </appender>
+
+        <!-- 滚动式文件日志配置     -->
+        <appender name="ErrorFileAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+            <File>${LOG_PATH:-${LOG_TEMP:-${java.io.tmpdir:-/tmp}}}/error.log</File>
+            <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+                <fileNamePattern>${LOG_PATH:-${LOG_TEMP:-${java.io.tmpdir:-/tmp}}}/error.%d{yyyy-MM-dd}.log
+                </fileNamePattern>
+                <maxHistory>30</maxHistory>
+            </rollingPolicy>
+            <encoder>
+                <pattern>%d [%thread] %-5level %logger{0} - %msg%n%ex</pattern>
+            </encoder>
+            <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+                <level>ERROR</level>
+            </filter>
+        </appender>
+
+        <!-- demo -->
+        <!--
+            <logger name="package" level="DEBUG">
+                <appender-ref ref="fileAppender"/>
+            </logger>
+        -->
+        <root level="INFO">
+            <appender-ref ref="Console"/>
+            <appender-ref ref="RollingFile"/>
+            <appender-ref ref="ErrorFileAppender"/>
+        </root>
+    </springProfile>
+</configuration>
