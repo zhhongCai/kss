@@ -1,6 +1,6 @@
 package com.kss.dataprocess.web;
 
-import com.kss.dataprocess.ApplicationInitializer;
+import com.kss.manage.ApplicationInitializer;
 import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

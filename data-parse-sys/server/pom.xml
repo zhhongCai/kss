@@ -348,7 +348,7 @@ https://docs.spring.io/spring-boot/docs/current/reference/html/appendix-dependen
                     <imageName>${docker.image.prefix}/${project.artifactId}</imageName>
                     <dockerDirectory>${project.basedir}/src/main/docker</dockerDirectory>
                     <dockerHost>https://192.168.99.100:2376</dockerHost>
-                    <!--<dockerCertPath>C:\Users\caizhh\.docker\machine\machines\default</dockerCertPath>-->
+                    <dockerCertPath>C:\Users\caizhh\.docker\machine\machines\default</dockerCertPath>
                     <resources>
                         <resource>
                             <targetPath>/</targetPath>

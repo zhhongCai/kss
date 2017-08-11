@@ -2,8 +2,8 @@ package com.kss.dataprocess.web.login;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.kss.dataprocess.ApplicationInitializer;
-import com.kss.dataprocess.application.bean.login.RequestLoginDto;
+import com.kss.manage.ApplicationInitializer;
+import com.kss.manage.application.bean.login.RequestLoginDto;
 import org.apache.log4j.Logger;
 import org.assertj.core.api.Assertions;
 import org.junit.Before;

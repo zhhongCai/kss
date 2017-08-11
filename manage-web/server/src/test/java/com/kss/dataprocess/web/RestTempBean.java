@@ -1,8 +1,8 @@
 package com.kss.dataprocess.web;
 
 import com.google.common.collect.Maps;
-import com.kss.dataprocess.application.bean.file.response.ResponseFile;
-import com.kss.dataprocess.application.bean.user.response.ResponseUserDto;
+import com.kss.manage.application.bean.file.response.ResponseFile;
+import com.kss.manage.application.bean.user.response.ResponseUserDto;
 
 import java.util.Map;
 

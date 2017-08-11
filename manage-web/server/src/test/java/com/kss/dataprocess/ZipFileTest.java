@@ -3,7 +3,7 @@ package com.kss.dataprocess;
 import com.alibaba.dubbo.common.io.Bytes;
 import com.beust.jcommander.internal.Lists;
 import com.google.common.collect.ImmutableList;
-import com.kss.dataprocess.web.file.FileController;
+import com.kss.manage.web.file.FileController;
 import org.assertj.core.api.Assertions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

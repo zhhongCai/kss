@@ -1,0 +1,17 @@
+discovery:
+  image: kss/kss-discovery
+  ports:
+   - "8761:8761"
+configserver:
+  image: kss/kss-config
+  ports:
+   - "8888:8888"
+  links:
+   - discovery
+gateway:
+  image: kss/kss-api-gateway
+  ports:
+   - "10000:10000"
+  links:
+   - discovery
+   - configserver
