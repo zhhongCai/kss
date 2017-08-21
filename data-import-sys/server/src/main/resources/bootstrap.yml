@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: data-import
+
+encrypt:
+  failOnError: false

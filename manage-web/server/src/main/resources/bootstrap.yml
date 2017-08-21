@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: manage-web
+
+encrypt:
+  failOnError: false

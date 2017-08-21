@@ -43,6 +43,11 @@ https://docs.spring.io/spring-boot/docs/current/reference/html/appendix-dependen
             <artifactId>spring-boot-starter-test</artifactId>
         </dependency>
         <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-eureka</artifactId>
+            <version>1.1.8.BUILD-SNAPSHOT</version>
+        </dependency>
+        <dependency>
             <groupId>org.aspectj</groupId>
             <artifactId>aspectjrt</artifactId>
         </dependency>
@@ -255,6 +260,16 @@ https://docs.spring.io/spring-boot/docs/current/reference/html/appendix-dependen
             <artifactId>spring-retry</artifactId>
             <version>1.1.2.RELEASE</version>
     </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-commons</artifactId>
+            <version>RELEASE</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-netflix-eureka-client</artifactId>
+            <version>RELEASE</version>
+        </dependency>
     </dependencies>
     <build>
         <plugins>

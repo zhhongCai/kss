@@ -7,7 +7,6 @@
     <artifactId>kss-config</artifactId>
     <version>0.1.0</version>
     <packaging>jar</packaging>
- <groupId>com.kss</groupId>
 
     <name>kss-config</name>
 
