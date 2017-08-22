@@ -6,7 +6,6 @@ https://docs.spring.io/spring-boot/docs/current/reference/html/appendix-dependen
 
     <name>data-import-sys-server</name>
     <url>http://maven.apache.org</url>
-    <groupId>com.kss</groupId>
 
     <artifactId>data-import-sys-server</artifactId>
     <version>0.1.0-SNAPSHOT</version>
@@ -19,6 +18,12 @@ https://docs.spring.io/spring-boot/docs/current/reference/html/appendix-dependen
         <docker.image.prefix>kss</docker.image.prefix>
         <docker.plugin.version>0.4.13</docker.plugin.version>
     </properties>
+
+    <parent>
+        <groupId>com.kss</groupId>
+        <artifactId>data-import-sys</artifactId>
+        <version>0.1.0-SNAPSHOT</version>
+    </parent>
 
     <dependencyManagement>
         <dependencies>

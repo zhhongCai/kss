@@ -1,11 +1,11 @@
 package com.kss.manage.application.service.file;
 
+import com.google.common.collect.Lists;
 import com.kss.commons.FileAttachData;
 import com.kss.commons.ResponseFileAttach;
 import com.kss.commons.util.BeanUtils;
 import com.kss.manage.database.po.FileAttachPo;
 import com.kss.manage.database.service.login.FileServiceImpl;
-import org.assertj.core.util.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;

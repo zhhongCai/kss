@@ -1,4 +1,4 @@
-﻿<!--spring boot 相关依赖及其版本号参见
+﻿﻿<!--spring boot 相关依赖及其版本号参见
 https://docs.spring.io/spring-boot/docs/current/reference/html/appendix-dependency-versions.html -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
@@ -29,30 +29,14 @@ https://docs.spring.io/spring-boot/docs/current/reference/html/appendix-dependen
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
-            <dependency>
-                <groupId>org.springframework.cloud</groupId>
-                <artifactId>spring-cloud-netflix</artifactId>
-                <version>1.0.7.RELEASE</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
         </dependencies>
     </dependencyManagement>
-
     <dependencies>
         <!-- spring start -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-eureka</artifactId>
-        </dependency>
-       <!-- <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter</artifactId>
-        </dependency>-->
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -61,6 +45,14 @@ https://docs.spring.io/spring-boot/docs/current/reference/html/appendix-dependen
         <dependency>
             <groupId>org.aspectj</groupId>
             <artifactId>aspectjrt</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-aspects</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjtools</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -89,7 +81,7 @@ https://docs.spring.io/spring-boot/docs/current/reference/html/appendix-dependen
             <artifactId>pagehelper</artifactId>
             <version>5.0.0</version>
         </dependency>
-         <!--mysql -->
+        <!--mysql -->
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
@@ -157,6 +149,11 @@ https://docs.spring.io/spring-boot/docs/current/reference/html/appendix-dependen
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpcore</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+
+        </dependency>
         <!-- http component end -->
         <!--json start-->
         <dependency>
@@ -165,6 +162,14 @@ https://docs.spring.io/spring-boot/docs/current/reference/html/appendix-dependen
             <version>1.2.17</version>
         </dependency>
         <!--json end -->
+
+        <!--dubbo rpc-->
+        <dependency>
+            <groupId>io.dubbo.springboot</groupId>
+            <artifactId>spring-boot-starter-dubbo</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+        <!--dubbo rpc end-->
 
         <!--freemarker start-->
         <dependency>
@@ -191,17 +196,30 @@ https://docs.spring.io/spring-boot/docs/current/reference/html/appendix-dependen
         </dependency>
         <!--itextpdf end-->
 
+        <!--swagger api doc start -->
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger2</artifactId>
+            <version>2.2.2</version>
+        </dependency>
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger-ui</artifactId>
+            <version>2.2.2</version>
+        </dependency>
+        <!--swagger api doc end -->
+
         <dependency>
             <groupId>tk.mybatis</groupId>
             <artifactId>mapper-spring-boot-starter</artifactId>
             <version>0.1.0</version>
         </dependency>
 
-       <!-- <dependency>
+        <dependency>
             <groupId>com.kss</groupId>
             <artifactId>manage-web-client</artifactId>
             <version>0.1.0-SNAPSHOT</version>
-        </dependency>-->
+        </dependency>
         <dependency>
             <groupId>com.kss</groupId>
             <artifactId>kss-commons</artifactId>
@@ -222,11 +240,6 @@ https://docs.spring.io/spring-boot/docs/current/reference/html/appendix-dependen
             <groupId>org.springframework.retry</groupId>
             <artifactId>spring-retry</artifactId>
             <version>1.1.2.RELEASE</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-commons</artifactId>
-            <version>RELEASE</version>
         </dependency>
     </dependencies>
     <build>
