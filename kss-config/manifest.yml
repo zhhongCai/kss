@@ -1,7 +1,0 @@
----
-applications:
-- name: kss-config
-  host: kss-config-${random-word}
-  memory: 512M
-  instances: 1
-  path: target/kss-config-0.1.0.jar
