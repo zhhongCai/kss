@@ -9,11 +9,7 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>kss-discovery</module>
-        <module>kss-api-gateway</module>
-        <module>kss-config</module>
-       <!-- <module>kss-hystrix-dashboard</module>
-        <module>kss-consul</module>-->
+        <module>kss-base-server</module>
         <module>kss-commons</module>
         <module>data-import-sys</module>
         <module>data-parse-sys</module>
