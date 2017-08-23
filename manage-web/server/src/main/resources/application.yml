@@ -26,3 +26,6 @@ spring:
     max-wait: 60000
     test-while-idle: true
     validation-query: select 1 from dual
+  data:
+    rest:
+      base-path: /api/
