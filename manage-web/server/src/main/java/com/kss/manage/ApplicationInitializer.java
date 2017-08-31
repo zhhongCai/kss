@@ -18,7 +18,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @SpringBootApplication
 @EnableAutoConfiguration
 @ComponentScan
-@EnableWebMvc
+//@EnableWebMvc
 @EnableDiscoveryClient
 @EnableSwagger2
 public class ApplicationInitializer {

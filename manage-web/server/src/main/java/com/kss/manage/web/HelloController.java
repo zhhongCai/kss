@@ -4,6 +4,7 @@ import com.kss.core.controller.KssAbstractController;
 import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -12,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@RestController
+@Controller
 public class HelloController extends KssAbstractController {
     private static Logger logger = LoggerFactory.getLogger(HelloController.class);
     public HelloController() {
@@ -34,6 +35,11 @@ public class HelloController extends KssAbstractController {
     public String doWorkNow(HttpServletRequest request, HttpServletResponse response) {
         logger.info("执行任务");
         return null;
+    }
+
+    @RequestMapping(value = "/")
+    public String index() {
+        return "index";
     }
 
 }
