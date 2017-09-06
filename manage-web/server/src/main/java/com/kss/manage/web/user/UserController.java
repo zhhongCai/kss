@@ -7,6 +7,7 @@ import com.kss.commons.util.BeanUtil;
 import com.kss.manage.dto.UserDto;
 import com.kss.manage.po.UserPo;
 import com.kss.manage.repository.UserRepository;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -37,13 +38,18 @@ public class UserController {
 
     @RequestMapping("/tableData")
     @ResponseBody
-    public ResponsePage<UserDto> tableData(Integer page, Integer limit) {
+    public ResponsePage<UserDto> tableData(String name, Integer page, Integer limit) {
         if(page > 0) {
             page = page -1;
         }
         Sort sort = new Sort(Sort.Direction.DESC, "id");
         Pageable pageRequest = new PageRequest(page, limit, sort);
-        Page<UserPo> userPage = userRepository.findAll(pageRequest);
+        Page<UserPo> userPage = null;
+        if(StringUtils.isBlank(name)) {
+            userPage = userRepository.findAll(pageRequest);
+        } else {
+            userPage = userRepository.findByNameLike(name, pageRequest);
+        }
         ResponsePage<UserDto> data = new ResponsePage<>();
         if(userPage.hasContent()) {
             data.setData(Lists.newArrayList(BeanUtil.fromBeans(userPage.getContent(), UserDto.class)));
