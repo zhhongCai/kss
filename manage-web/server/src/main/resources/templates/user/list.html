@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="head :: head"></head>
+<body>
+<div class="layui-layout layui-layout-admin">
+
+    <div th:replace="menu :: menu"></div>
+
+    <div class="layui-body">
+        <div class="layui-btn-group js-btn-group" style="margin: 10px 0 0 0;">
+            <button class="layui-btn layui-btn-small" data-type="addUser" title="新增"><i class="layui-icon"></i></button>
+            <button class="layui-btn layui-btn-small" data-type="editUser" title="修改"><i class="layui-icon"></i></button>
+            <button class="layui-btn layui-btn-small" data-type="deleteUser" title="删除"><i class="layui-icon"></i></button>
+        </div>
+
+        <table id="userTable"></table>
+    </div>
+
+    <div th:replace="footer :: footer"></div>
+</div>
+<script src="http://cdn.jsdelivr.net/webjars/layui/2.1.2/layui.all.js"
+        th:src="@{/layui/layui.all.js}"></script>
+<script type="text/javascript">
+//JavaScript代码区域
+layui.use(['jquery', 'element', 'table', 'layer', 'form'], function(){
+  var element = layui.element;
+  var $ = layui.$;
+
+  var userTable = layui.table;
+  userTable.render({
+    id: 'userTableId',
+    elem: '#userTable',
+    url: '/user/tableData',
+    page: true,
+    method: 'post',
+    cols:[[
+        {checkbox: true},
+        {field:'id', title:'ID', width: 150},
+        {field:'name', title:'用户名', width: 200},
+        {field:'code', title:'code', width: 200 },
+        {field:'phone', title:'电话', width: 150},
+        {field:'createTime', title:'创建时间', width: 150}
+    ]],
+    done: function(res, curr, count){
+        //如果是异步请求数据方式，res即为你接口返回的信息。
+        //如果是直接赋值的方式，res即为：{data: [], count: 99} data为当前页数据、count为数据总长度
+        console.log(res);
+
+        //得到当前页码
+        console.log(curr);
+
+        //得到数据总量
+        console.log(count);
+    }
+  });
+
+    var initForm = function(data) {
+        $('#userForm').find('input[name="id"]').val(data.id);
+        $('#userForm').find('input[name="name"]').val(data.name);
+        $('#userForm').find('input[name="code"]').val(data.code);
+        $('#userForm').find('input[name="phone"]').val(data.phone);
+    };
+
+    var active = {
+        addUser: function(){
+            layer.open({
+                type: 1,
+                title: '新增用户',
+                maxWidth: 450,
+                content: $('#userForm')
+            });
+        },
+        editUser: function(){
+            var checkStatus = userTable.checkStatus('userTableId'),data = checkStatus.data;
+
+            if(!data || data.length != 1) {
+                layer.alert("请选择一条记录");
+                return;
+            }
+            layer.open({
+                type: 1,
+                title: '修改用户',
+                maxWidth: 450,
+                content: $('#userForm')
+            });
+            initForm(data[0]);
+        },
+        deleteUser: function(){ //验证是否全选
+            var checkStatus = userTable.checkStatus('userTableId'),data = checkStatus.data;
+            if(!data || data.length == 0) {
+                layer.alert("请选择要删除的记录");
+                return;
+            }
+            layer.confirm('确定要删除选中的记录?', {icon: 3, title:'确认'}, function(index){
+                var ids = [];
+                $.each(data, function(index, d) {
+                    ids.push(d.id);
+                });
+                $.ajax({
+                    url: '/user/delete',
+                    data: {ids : ids.join(',')},
+                    type: 'post',
+                    dataType: 'json',
+                    success: function (result) {
+                        if(result.code == '0') {
+                            layer.alert("删除成功！");
+                            window.location.reload();
+                        } else {
+                            layer.alert("删除失败：" + result.msg);
+                        }
+                    }
+                });
+
+                layer.close(index);
+            });
+        }
+    };
+
+    $('.js-btn-group .layui-btn').on('click', function(){
+        var type = $(this).data('type');
+        active[type] ? active[type].call(this) : '';
+    });
+
+    var form = layui.form;
+
+    //表单提交
+    form.on('submit(saveBtn)', function(data){
+        $.ajax({
+            url: '/user/saveOrUpdate',
+            data: data.field,
+            type: 'post',
+            dataType: 'json',
+            success: function (result) {
+                if(result.code == '0') {
+                    layer.alert("保存成功！");
+                    window.location.reload();
+                } else {
+                    layer.alert("保存失败：" + result.msg);
+                }
+            }
+        });
+        return false;
+    });
+});
+
+</script>
+</body>
+
+<div th:replace="user/edit :: userForm" ></div>
+</html>

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<form class="layui-form" style="display: none;" th:fragment="userForm" id="userForm">
+    <input type="hidden" name="id" />
+    <div class="layui-form-item" style="margin-top: 10px;">
+        <label class="layui-form-label">名称</label>
+        <div class="layui-input-inline">
+            <input type="text" name="name" lay-verify="required" autocomplete="off" placeholder="请输入名称" class="layui-input"/>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">用户编码</label>
+        <div class="layui-input-inline">
+            <input type="text" name="code" lay-verify="required" placeholder="请输入用户编码" autocomplete="off" class="layui-input"/>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">手机</label>
+            <div class="layui-input-inline">
+                <input type="tel" name="phone" lay-verify="phone" autocomplete="off" class="layui-input"/>
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn" lay-submit="" lay-filter="saveBtn">保存</button>
+            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+        </div>
+    </div>
+</form>
+</body>
+</html>

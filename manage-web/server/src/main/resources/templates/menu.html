@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<div th:fragment="menu">
+    <div class="layui-header">
+        <div class="layui-logo">KSS</div>
+        <!-- 头部区域（可配合layui已有的水平导航） -->
+        <ul class="layui-nav layui-layout-left">
+            <li class="layui-nav-item"><a href="">控制台</a></li>
+            <li class="layui-nav-item"><a href="">数据导入</a></li>
+            <li class="layui-nav-item"><a href="">数据预处理</a></li>
+            <li class="layui-nav-item"><a href="">数据分析</a></li>
+            <li class="layui-nav-item"><a href="">数据处理</a></li>
+            <li class="layui-nav-item"><a href="">结果展现</a></li>
+            <li class="layui-nav-item">
+                <a href="javascript:;">系统管理</a>
+                <dl class="layui-nav-child">
+                    <dd><a href="#" th:href="@{/user/list}">用户管理</a></dd>
+                    <dd><a href="">权限管理</a></dd>
+                    <dd><a href="">登录日志</a></dd>
+                </dl>
+            </li>
+        </ul>
+        <ul class="layui-nav layui-layout-right">
+            <li class="layui-nav-item">
+                <a href="javascript:;">admin</a>
+                <dl class="layui-nav-child">
+                    <dd><a href="">基本资料</a></dd>
+                    <dd><a href="">安全设置</a></dd>
+                </dl>
+            </li>
+            <li class="layui-nav-item"><a href="">退出</a></li>
+        </ul>
+    </div>
+
+    <div class="layui-side layui-bg-black">
+        <div class="layui-side-scroll">
+            <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
+            <ul class="layui-nav layui-nav-tree"  lay-filter="test">
+                <li class="layui-nav-item layui-nav-itemed">
+                    <a class="" href="javascript:;">控制台</a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="javascript:;">数据源管理</a></dd>
+                        <dd><a href="javascript:;">接口管理</a></dd>
+                        <dd><a href="javascript:;">流程管理</a></dd>
+                    </dl>
+                </li>
+                <li class="layui-nav-item">
+                    <a href="javascript:;">数据导入</a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="javascript:;">查看数据</a></dd>
+                        <dd><a href="javascript:;">其他</a></dd>
+                    </dl>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+</body>
+</html>
+
+

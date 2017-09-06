@@ -9,7 +9,7 @@ import org.springframework.cloud.netflix.sidecar.EnableSidecar;
 
 @SpringBootApplication
 @EnableEurekaServer
-@EnableConfigServer
+//@EnableConfigServer
 //@EnableDiscoveryClient
 //@EnableSidecar
 public class Application {

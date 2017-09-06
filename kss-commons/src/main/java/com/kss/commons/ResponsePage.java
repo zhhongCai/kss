@@ -1,26 +1,45 @@
 package com.kss.commons;
 
-import io.swagger.annotations.ApiModelProperty;
+import com.google.common.collect.Lists;
 
 import java.util.List;
 
 /**
- * Created by chenchw on 2017/5/11.
+ *
+ * @param <T>
  */
 public class ResponsePage<T> {
-    @ApiModelProperty(value = "分页总记录数")
-    private int total;
-    @ApiModelProperty(value = "当前页列表")
-    private List<T> data;
-    @ApiModelProperty(value = "统计信息")
-    private Object count;
+    public static int SUCCESS_CODE = 0;
+    public static int ERROR_CODE = -1;
 
-    public int getTotal() {
-        return total;
+    private int code = ResponsePage.SUCCESS_CODE;
+    private String msg;
+
+    private int count;
+    private List<T> data = Lists.newArrayList();
+
+    public int getCode() {
+        return code;
     }
 
-    public void setTotal(int total) {
-        this.total = total;
+    public void setCode(int code) {
+        this.code = code;
+    }
+
+    public String getMsg() {
+        return msg;
+    }
+
+    public void setMsg(String msg) {
+        this.msg = msg;
+    }
+
+    public int getCount() {
+        return count;
+    }
+
+    public void setCount(int count) {
+        this.count = count;
     }
 
     public List<T> getData() {
@@ -29,22 +48,5 @@ public class ResponsePage<T> {
 
     public void setData(List<T> data) {
         this.data = data;
-    }
-
-    public Object getCount() {
-        return count;
-    }
-
-    public void setCount(Object count) {
-        this.count = count;
-    }
-
-    @Override
-    public String toString() {
-        return "ResponsePage{" +
-                "total=" + total +
-                ", data=" + data +
-                ", count=" + count +
-                '}';
     }
 }

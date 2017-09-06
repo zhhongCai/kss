@@ -134,6 +134,19 @@
             <artifactId>kss-commons</artifactId>
             <version>0.1.0-SNAPSHOT</version>
         </dependency>
+
+
+        <!--
+        devtools可以实现页面热部署（即页面修改后会立即生效，这个可以直接在application.properties文件中配置spring.thymeleaf.cache=false来实现），
+             实现类文件热部署（类文件修改后不会立即生效），实现对属性文件的热部署。
+            即devtools会监听classpath下的文件变动，并且会立即重启应用（发生在保存时机），注意：因为其采用的虚拟机机制，该项重启是很快的
+          -->
+         <dependency>
+             <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-devtools</artifactId>
+             <!-- optional=true,依赖不会传递，该项目依赖devtools；之后依赖myboot项目的项目如果想要使用devtools，需要重新引入 -->
+             <optional>true</optional>
+         </dependency>
     </dependencies>
 
     <build>
@@ -149,7 +162,7 @@
                     </execution>
                 </executions>
             </plugin>
-            <plugin>
+            <!--<plugin>
                 <groupId>com.spotify</groupId>
                 <artifactId>docker-maven-plugin</artifactId>
                 <version>${docker.plugin.version}</version>
@@ -174,7 +187,7 @@
                         </resource>
                     </resources>
                 </configuration>
-            </plugin>
+            </plugin>-->
         </plugins>
     </build>
 
