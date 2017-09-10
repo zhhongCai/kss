@@ -13,6 +13,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -63,11 +64,15 @@ public class UserController {
     @ResponseBody
     public AjaxResult<String> saveOrUpdate(UserPo userPo) {
         AjaxResult<String> result = new AjaxResult<>();
+
+        BCryptPasswordEncoder encoder =new BCryptPasswordEncoder();
         if(userPo.getId() != null) {
             UserPo dbUser = userRepository.findOne(userPo.getId());
             dbUser.setName(userPo.getName());
             dbUser.setCode(userPo.getCode());
             dbUser.setPhone(userPo.getPhone());
+
+            dbUser.setPassword(encoder.encode(userPo.getPassword().trim()));
             UserPo saved = userRepository.save(dbUser);
             if(saved == null) {
                 result.setCode(AjaxResult.ERROR_CODE);
@@ -78,6 +83,7 @@ public class UserController {
             //TODO
             userPo.setCreateUser("admin");
             userPo.setCreateTime(new Date());
+            userPo.setPassword(encoder.encode(userPo.getPassword().trim()));
             UserPo saved = userRepository.save(userPo);
             if(saved == null) {
                 result.setCode(AjaxResult.ERROR_CODE);

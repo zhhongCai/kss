@@ -16,7 +16,8 @@ spring:
   jpa:
     show-sql: true
   thymeleaf:
-    cache: false #开发时关闭缓存,不然没法看到实时页面
+    #开发时关闭缓存,不然没法看到实时页面
+    cache: false
   jmx:
     enabled: false
   datasource:

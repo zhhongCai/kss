@@ -37,9 +37,4 @@ public class HelloController extends KssAbstractController {
         return null;
     }
 
-    @RequestMapping(value = "/")
-    public String index() {
-        return "index";
-    }
-
 }

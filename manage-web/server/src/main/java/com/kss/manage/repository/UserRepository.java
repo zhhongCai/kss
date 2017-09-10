@@ -10,4 +10,6 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 public interface UserRepository extends PagingAndSortingRepository<UserPo, Long> {
 
     Page<UserPo> findByNameLike(String name, Pageable var1);
+
+    UserPo findByName(String name);
 }

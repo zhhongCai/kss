@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+    <title>KSS-登录</title>
+    <link href="http://cdn.jsdelivr.net/webjars/layui/css/layui.css"
+          th:href="@{/layui/css/layui.css}" rel="stylesheet" media="screen"/>
+<body style="background-color: #2a2f3a;">
+    <div style="margin: 288px auto auto auto;  width: 450px;">
+        <form class="layui-form" action="/doLogin" method="post" id="loginForm">
+            <input type="hidden" name="id" />
+            <div class="layui-form-item" style="margin-top: 10px;">
+                    <label class="layui-form-label" style="color: #ffffff;">用户名</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="username" lay-verify="required" autocomplete="off" placeholder="请输用户名" class="layui-input"/>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label" style="color: #ffffff;">密码</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="password" lay-verify="required" placeholder="请输入密码" autocomplete="off" class="layui-input"/>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button class="layui-btn" lay-submit="" lay-filter="loginBtn">登录</button>
+                    <button type="reset" class="layui-btn layui-btn-primary">清空</button>
+                </div>
+            </div>
+        </form>
+    </div>
+<script  src="http://cdn.jsdelivr.net/webjars/layui/2.1.2/layui.js"
+        th:src="@{/layui/layui.js}"></script>
+<script >
+//JavaScript代码区域
+layui.use(['element', 'form'], function(){
+  var element = layui.element;
+
+});
+</script>
+</body>
+</html>
