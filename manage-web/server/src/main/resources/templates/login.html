@@ -9,7 +9,10 @@
           th:href="@{/layui/css/layui.css}" rel="stylesheet" media="screen"/>
 <body style="background-color: #2a2f3a;">
     <div style="margin: 288px auto auto auto;  width: 450px;">
-        <form class="layui-form" action="/doLogin" method="post" id="loginForm">
+        <div th:if="${param.error}">
+            Invalid username and password.
+        </div>
+        <form class="layui-form" th:action="@{/login}"  method="post" id="loginForm">
             <input type="hidden" name="id" />
             <div class="layui-form-item" style="margin-top: 10px;">
                     <label class="layui-form-label" style="color: #ffffff;">用户名</label>
@@ -20,13 +23,13 @@
             <div class="layui-form-item">
                 <label class="layui-form-label" style="color: #ffffff;">密码</label>
                 <div class="layui-input-inline">
-                    <input type="text" name="password" lay-verify="required" placeholder="请输入密码" autocomplete="off" class="layui-input"/>
+                    <input type="password" name="password" lay-verify="required" placeholder="请输入密码" autocomplete="off" class="layui-input"/>
                 </div>
             </div>
 
             <div class="layui-form-item">
                 <div class="layui-input-block">
-                    <button class="layui-btn" lay-submit="" lay-filter="loginBtn">登录</button>
+                    <button type="submit" class="layui-btn" lay-submit="" lay-filter="loginBtn">登录</button>
                     <button type="reset" class="layui-btn layui-btn-primary">清空</button>
                 </div>
             </div>

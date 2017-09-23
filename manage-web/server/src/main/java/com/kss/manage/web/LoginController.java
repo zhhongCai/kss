@@ -1,34 +1,32 @@
 package com.kss.manage.web;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+/**
+ * Created by caizhh on 2017/9/23.
+ */
 @Controller
 public class LoginController {
 
-    @RequestMapping(value = "/login")
-    public String login() {
-        return "login";
-    }
+    private static Logger logger = LoggerFactory.getLogger(LoginController.class);
 
-    @RequestMapping(value = "/logout")
-    public String logout() {
-        return "login";
-    }
-
-    @RequestMapping(value = "/403")
-    public String error403() {
-        return "error/403";
-    }
-
-    @RequestMapping(value = "/")
-    public String index() {
-        return "index";
-    }
-
-    @RequestMapping(value = "/doLogin")
-    public String doLogin() {
-
-        return "/";
+    @RequestMapping(value="/logout", method = RequestMethod.GET)
+    public String logoutPage (HttpServletRequest request, HttpServletResponse response) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth != null){
+            new SecurityContextLogoutHandler().logout(request, response, auth);
+        }
+        logger.info("用户登出: {}", auth.getName());
+        return "redirect:/login?logout";
     }
 }

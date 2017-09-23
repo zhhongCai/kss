@@ -1,20 +1,27 @@
 package com.kss.manage.po;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import javax.persistence.*;
+import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "base_user")
-public class UserPo {
+public class UserPo implements UserDetails {
+
+    public final static String ROLE_ADMIN = "ADMIN";
+    public final static String ROLE_NORMAL_USER = "NORMAL_USER";
+    public final static String ROLE_ANONYMOUS = "ANONYMOUS";
 
     @Id
     @GeneratedValue
     private Long id;
 
-    private String name;
+    private String username;
 
     private String password;
 
@@ -32,8 +39,17 @@ public class UserPo {
 
     private String modifyUser;
 
-    public UserPo() {
-    }
+    private Boolean accountNonExpired;
+
+    private Boolean accountNonLocked;
+
+    private Boolean credentialsNonExpired;
+
+    private Boolean enabled;
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.MERGE})
+    @JsonIgnore
+    private List<UserRolePo> roleList;
 
     public Long getId() {
         return id;
@@ -43,14 +59,42 @@ public class UserPo {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    @Override
+    public String getUsername() {
+        return username;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    @Override
+    public boolean isAccountNonExpired() {
+        return accountNonExpired;
     }
 
+    @Override
+    public boolean isAccountNonLocked() {
+        return accountNonLocked;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return credentialsNonExpired;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    @Transient
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return roleList;
+    }
+
+    @Override
     public String getPassword() {
         return password;
     }
@@ -113,5 +157,45 @@ public class UserPo {
 
     public void setModifyUser(String modifyUser) {
         this.modifyUser = modifyUser;
+    }
+
+    public Boolean getAccountNonExpired() {
+        return accountNonExpired;
+    }
+
+    public void setAccountNonExpired(Boolean accountNonExpired) {
+        this.accountNonExpired = accountNonExpired;
+    }
+
+    public Boolean getAccountNonLocked() {
+        return accountNonLocked;
+    }
+
+    public void setAccountNonLocked(Boolean accountNonLocked) {
+        this.accountNonLocked = accountNonLocked;
+    }
+
+    public Boolean getCredentialsNonExpired() {
+        return credentialsNonExpired;
+    }
+
+    public void setCredentialsNonExpired(Boolean credentialsNonExpired) {
+        this.credentialsNonExpired = credentialsNonExpired;
+    }
+
+    public Boolean getEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(Boolean enabled) {
+        this.enabled = enabled;
+    }
+
+    public List<UserRolePo> getRoleList() {
+        return roleList;
+    }
+
+    public void setRoleList(List<UserRolePo> roleList) {
+        this.roleList = roleList;
     }
 }

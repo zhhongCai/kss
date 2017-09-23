@@ -7,6 +7,7 @@ import com.kss.commons.util.BeanUtil;
 import com.kss.manage.dto.UserDto;
 import com.kss.manage.po.UserPo;
 import com.kss.manage.repository.UserRepository;
+import com.kss.manage.security.UserService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -32,6 +33,9 @@ public class UserController {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private UserService userService;
+
     @RequestMapping("/list")
     public String list(Model model) {
         return "user/list";
@@ -49,7 +53,7 @@ public class UserController {
         if(StringUtils.isBlank(name)) {
             userPage = userRepository.findAll(pageRequest);
         } else {
-            userPage = userRepository.findByNameLike(name, pageRequest);
+            userPage = userRepository.findByUsernameLike(name, pageRequest);
         }
         ResponsePage<UserDto> data = new ResponsePage<>();
         if(userPage.hasContent()) {
@@ -65,16 +69,14 @@ public class UserController {
     public AjaxResult<String> saveOrUpdate(UserPo userPo) {
         AjaxResult<String> result = new AjaxResult<>();
 
-        BCryptPasswordEncoder encoder =new BCryptPasswordEncoder();
         if(userPo.getId() != null) {
             UserPo dbUser = userRepository.findOne(userPo.getId());
-            dbUser.setName(userPo.getName());
+            dbUser.setUsername(userPo.getUsername());
             dbUser.setCode(userPo.getCode());
             dbUser.setPhone(userPo.getPhone());
 
-            dbUser.setPassword(encoder.encode(userPo.getPassword().trim()));
-            UserPo saved = userRepository.save(dbUser);
-            if(saved == null) {
+            boolean ret = userService.save(dbUser);
+            if(!ret) {
                 result.setCode(AjaxResult.ERROR_CODE);
                 result.setMsg("更新用户失败");
                 return result;
@@ -83,9 +85,12 @@ public class UserController {
             //TODO
             userPo.setCreateUser("admin");
             userPo.setCreateTime(new Date());
-            userPo.setPassword(encoder.encode(userPo.getPassword().trim()));
-            UserPo saved = userRepository.save(userPo);
-            if(saved == null) {
+            userPo.setAccountNonExpired(true);
+            userPo.setAccountNonLocked(true);
+            userPo.setCredentialsNonExpired(true);
+            userPo.setEnabled(true);
+            boolean ret = userService.save(userPo);
+            if(!ret) {
                 result.setCode(AjaxResult.ERROR_CODE);
                 result.setMsg("保存用户失败");
                 return result;

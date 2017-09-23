@@ -1,18 +1,26 @@
-package com.kss.manage.dto;
+package com.kss.manage.po;
 
+import org.springframework.security.core.GrantedAuthority;
+
+import javax.persistence.*;
 import java.util.Date;
 
-public class UserDto {
+/**
+ * Created by caizhh on 2017/9/23.
+ */
+@Entity
+@Table(name = "base_user_role")
+public class UserRolePo implements GrantedAuthority {
 
+    @Id
+    @GeneratedValue
     private Long id;
 
-    private String username;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private UserPo user;
 
-    private String code;
-
-    private String phone;
-
-    private String department;
+    private String role;
 
     private Date createTime;
 
@@ -22,6 +30,12 @@ public class UserDto {
 
     private String modifyUser;
 
+    @Transient
+    @Override
+    public String getAuthority() {
+        return role;
+    }
+
     public Long getId() {
         return id;
     }
@@ -30,36 +44,20 @@ public class UserDto {
         this.id = id;
     }
 
-    public String getUsername() {
-        return username;
+    public UserPo getUser() {
+        return user;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setUser(UserPo user) {
+        this.user = user;
     }
 
-    public String getCode() {
-        return code;
+    public String getRole() {
+        return role;
     }
 
-    public void setCode(String code) {
-        this.code = code;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-    public String getDepartment() {
-        return department;
-    }
-
-    public void setDepartment(String department) {
-        this.department = department;
+    public void setRole(String role) {
+        this.role = role;
     }
 
     public Date getCreateTime() {

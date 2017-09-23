@@ -14,7 +14,7 @@ layui.use(['jquery', 'element', 'table', 'layer', 'form'], function(){
         cols:[[
             {checkbox: true},
             {field:'id', title:'ID', width: 150},
-            {field:'name', title:'用户名', width: 200},
+            {field:'username', title:'用户名', width: 200},
             {field:'code', title:'code', width: 200 },
             {field:'phone', title:'电话', width: 150},
             {field:'createTime', title:'创建时间', width: 150}
@@ -34,7 +34,7 @@ layui.use(['jquery', 'element', 'table', 'layer', 'form'], function(){
 
     var initForm = function(data) {
         $('#userForm').find('input[name="id"]').val(data.id);
-        $('#userForm').find('input[name="name"]').val(data.name);
+        $('#userForm').find('input[name="username"]').val(data.username);
         $('#userForm').find('input[name="code"]').val(data.code);
         $('#userForm').find('input[name="phone"]').val(data.phone);
     };
@@ -49,7 +49,7 @@ layui.use(['jquery', 'element', 'table', 'layer', 'form'], function(){
             });
             initForm({
                 id: '',
-                name: '',
+                username: '',
                 code: '',
                 phone: ''
             });
@@ -99,13 +99,13 @@ layui.use(['jquery', 'element', 'table', 'layer', 'form'], function(){
             });
         },
         searchUser: function() {
-            var name = $('#name').val();
-            if(!!name) {
-                name = '%' + $('#name').val() + '%';
+            var username = $('#username').val();
+            if(!!username) {
+                username = '%' + $('#username').val() + '%';
             }
             userTable.reload('userTableId', {
                 where: {
-                    name: name
+                    username: username
                 }
             });
         }
