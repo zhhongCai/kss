@@ -56,6 +56,41 @@ CREATE TABLE `db_data_source` (
 	PRIMARY KEY (`id`)
 ) ENGINE = INNODB DEFAULT CHARSET = UTF8 COLLATE = UTF8_BIN;
 
+
+CREATE TABLE `kss_project` (
+    `id` BIGINT(20) NOT NULL AUTO_INCREMENT,
+    `name` VARCHAR(128) COLLATE UTF8_BIN DEFAULT NULL,
+    `code` VARCHAR(64) COLLATE UTF8_BIN DEFAULT NULL,
+    `db_name` VARCHAR(16) COLLATE UTF8_BIN DEFAULT NULL,
+    `description` VARCHAR(256) COLLATE UTF8_BIN DEFAULT NULL,
+    `table_schema` TEXT COLLATE UTF8_BIN DEFAULT NULL,
+
+    `create_time` DATETIME DEFAULT NULL,
+    `create_user` VARCHAR(64) COLLATE UTF8_BIN DEFAULT NULL,
+    `modify_time` DATETIME DEFAULT NULL,
+    `modify_user` VARCHAR(64) COLLATE UTF8_BIN DEFAULT NULL,
+    PRIMARY KEY (`id`)
+)  ENGINE=INNODB DEFAULT CHARSET=UTF8 COLLATE = UTF8_BIN;
+
+CREATE TABLE `user_rel_project` (
+    `id` BIGINT(20) NOT NULL AUTO_INCREMENT,
+    `user_id` BIGINT NOT NULL,
+    `project_id`  BIGINT NOT NULL,
+
+    PRIMARY KEY (`id`)
+)  ENGINE=INNODB DEFAULT CHARSET=UTF8 COLLATE = UTF8_BIN;
+
+
+CREATE TABLE `project_rel_data_source` (
+    `id` BIGINT(20) NOT NULL AUTO_INCREMENT,
+    `project_id`  BIGINT NOT NULL,
+    `data_source_id` BIGINT NOT NULL,
+
+    PRIMARY KEY (`id`)
+)  ENGINE=INNODB DEFAULT CHARSET=UTF8 COLLATE = UTF8_BIN;
+
+
+
 -- admin/admin123
 INSERT INTO `manage-web`.`base_user` (`id`, `username`, `password`, `code`, `phone`, `department`, `create_time`, `create_user`, `modify_time`, `modify_user`, `account_non_expired`, `account_non_locked`, `credentials_non_expired`, `enabled`)
 VALUES (1, 'admin', '$2a$10$s.aeELk9MOBXG5Ct8AdYdOVUBMyWeP3iKoNzVUs6p1Sb6Krx8.HE2', 'admin', '18650345343', 'test', now(), 'admin', now(), NULL, 1, 1, 1, 1);

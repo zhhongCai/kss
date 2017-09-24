@@ -1,3 +1,7 @@
 1. 模块说明
 manage-web: 管理系统
 data-*-sys: 数据处理
+
+2. 技术文档
+2.1 thymeleaf:
+http://www.thymeleaf.org/doc/tutorials/3.0/usingthymeleaf.html#conditional-expressions
