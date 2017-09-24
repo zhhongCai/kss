@@ -17,7 +17,8 @@ layui.use(['jquery', 'element', 'table', 'layer', 'form'], function(){
             {field:'username', title:'用户名', width: 200},
             {field:'code', title:'code', width: 200 },
             {field:'phone', title:'电话', width: 150},
-            {field:'createTime', title:'创建时间', width: 150}
+            {field:'createTime', title:'创建时间', width: 150},
+            {fixed: 'right', title:'操作', width:150, align:'center', toolbar: '#userOptBar'}
         ]],
         done: function(res, curr, count){
             //如果是异步请求数据方式，res即为你接口返回的信息。
@@ -98,7 +99,7 @@ layui.use(['jquery', 'element', 'table', 'layer', 'form'], function(){
                 layer.close(index);
             });
         },
-        searchUser: function() {
+        searchUser: function(){
             var username = $('#username').val();
             if(!!username) {
                 username = '%' + $('#username').val() + '%';
@@ -117,10 +118,45 @@ layui.use(['jquery', 'element', 'table', 'layer', 'form'], function(){
         active[type] ? active[type].call(this) : '';
     });
 
+    //监听工具条
+    userTable.on('tool(userTableTool)', function(obj){
+        var data = obj.data;
+        if(obj.event === 'assignRole'){
+            layer.open({
+                type: 1,
+                title: '分配角色',
+                area: ['350px', '300px'],
+                content: $('#assignRole')
+            });
+            $('#assignUserId').val(data.id);
+            $('#assignRole').find('input[name="username"]').val(data.username);
+             form.render();
+        }
+    });
+
     //表单提交
     form.on('submit(saveBtn)', function(data){
         $.ajax({
             url: '/user/saveOrUpdate',
+            data: data.field,
+            type: 'post',
+            dataType: 'json',
+            success: function (result) {
+                if(result.code == '0') {
+                    layer.alert("保存成功！");
+                    window.location.reload();
+                } else {
+                    layer.alert("保存失败：" + result.msg);
+                }
+            }
+        });
+        return false;
+    });
+    //分配角色
+    form.on('submit(assignBtn)', function(data){
+    console.info(data.field);
+        $.ajax({
+            url: '/user/saveOrUpdateRole',
             data: data.field,
             type: 'post',
             dataType: 'json',

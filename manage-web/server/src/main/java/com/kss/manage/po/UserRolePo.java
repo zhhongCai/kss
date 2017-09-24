@@ -33,7 +33,7 @@ public class UserRolePo implements GrantedAuthority {
     @Transient
     @Override
     public String getAuthority() {
-        return role;
+        return getRole();
     }
 
     public Long getId() {

@@ -61,4 +61,4 @@ INSERT INTO `manage-web`.`base_user` (`id`, `username`, `password`, `code`, `pho
 VALUES (1, 'admin', '$2a$10$s.aeELk9MOBXG5Ct8AdYdOVUBMyWeP3iKoNzVUs6p1Sb6Krx8.HE2', 'admin', '18650345343', 'test', now(), 'admin', now(), NULL, 1, 1, 1, 1);
 
 INSERT INTO `manage-web`.`base_user_role` (`id`, `user_id`, `role`, `create_time`, `create_user`, `modify_time`, `modify_user`)
-VALUES (1, 1, 'ADMIN', now(), 'admin', now(), 'admin');
+VALUES (1, 1, 'ROLE_ADMIN', now(), 'admin', now(), 'admin');

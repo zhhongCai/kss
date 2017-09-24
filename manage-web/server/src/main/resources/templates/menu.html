@@ -24,10 +24,13 @@
         </ul>
         <ul class="layui-nav layui-layout-right">
             <li class="layui-nav-item">
-                <a href="javascript:;">admin</a>
+                <!-- 从session取用户信息
+                <a href="javascript:;" th:text="${session.SPRING_SECURITY_CONTEXT.authentication.principal.username}"></a>
+                -->
+                <a href="javascript:;" sec:authentication="name"></a>
                 <dl class="layui-nav-child">
                     <dd><a href="">基本资料</a></dd>
-                    <dd><a href="">安全设置</a></dd>
+                    <dd><a href="" sec:authentication="principal.authorities">安全设置</a></dd>
                 </dl>
             </li>
             <li class="layui-nav-item"><a th:href="@{/logout}">退出</a></li>

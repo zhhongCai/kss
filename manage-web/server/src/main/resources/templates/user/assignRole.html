@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<body>
+<form class="layui-form" style="display: none;" th:fragment="assignRole" id="assignRole">
+    <input type="hidden" name="id" id="assignUserId"/>
+    <div class="layui-form-item" style="margin-top: 10px;">
+        <label class="layui-form-label">用户名称</label>
+        <div class="layui-input-inline">
+            <input type="text" name="username" disabled="disabled" lay-verify="required" autocomplete="off" class="layui-input"/>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">角色</label>
+        <div class="layui-input-inline">
+            <select th:field="${user.role.role}" >
+                <option value="">请选择角色</option>
+                <option
+                        th:each="role : ${roleList}"
+                        th:value="${role}"
+                        th:text="${role.desc}"
+                ></option>
+            </select>
+        </div>
+    </div>
+
+    <div class="layui-form-item" style="margin-top: 70px;">
+        <div class="layui-input-block">
+            <button class="layui-btn" lay-submit="" lay-filter="assignBtn">分配角色</button>
+            <button type="cancel" class="layui-btn layui-btn-primary">取消</button>
+        </div>
+    </div>
+</form>
+</body>
+</html>

@@ -15,13 +15,17 @@
             </div>
             <button class="layui-btn" data-type="searchUser">搜索</button>
         </div>
-        <div class="layui-btn-group js-btn-group" style="margin: 10px 0 0 0;">
+        <div class="layui-btn-group js-btn-group" style="margin: 10px 0 0 0;" sec:authorize="hasAuthority('ROLE_ADMIN')" >
             <button class="layui-btn layui-btn-small" data-type="addUser" title="新增"><i class="layui-icon"></i></button>
             <button class="layui-btn layui-btn-small" data-type="editUser" title="修改"><i class="layui-icon"></i></button>
             <button class="layui-btn layui-btn-small" data-type="deleteUser" title="删除"><i class="layui-icon"></i></button>
         </div>
 
-        <table id="userTable" ></table>
+        <table id="userTable" lay-filter="userTableTool"></table>
+
+        <script type="text/html" id="userOptBar">
+            <a class="layui-btn layui-btn-mini"  lay-event="assignRole" sec:authorize="hasAuthority('ROLE_ADMIN')">分配角色</a>
+        </script>
     </div>
 
     <div th:replace="footer :: footer"></div>
@@ -32,4 +36,5 @@
 </body>
 
 <div th:replace="user/edit :: userForm" ></div>
+<div th:replace="user/assignRole :: assignRole" ></div>
 </html>

@@ -1,6 +1,6 @@
 package com.kss.manage.po;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.google.common.collect.Lists;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -12,10 +12,6 @@ import java.util.List;
 @Entity
 @Table(name = "base_user")
 public class UserPo implements UserDetails {
-
-    public final static String ROLE_ADMIN = "ADMIN";
-    public final static String ROLE_NORMAL_USER = "NORMAL_USER";
-    public final static String ROLE_ANONYMOUS = "ANONYMOUS";
 
     @Id
     @GeneratedValue
@@ -47,9 +43,8 @@ public class UserPo implements UserDetails {
 
     private Boolean enabled;
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.MERGE})
-    @JsonIgnore
-    private List<UserRolePo> roleList;
+    @OneToOne(mappedBy = "user", fetch = FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.MERGE})
+    private UserRolePo role;
 
     public Long getId() {
         return id;
@@ -91,7 +86,7 @@ public class UserPo implements UserDetails {
     @Transient
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return roleList;
+        return Lists.newArrayList(getRole());
     }
 
     @Override
@@ -191,11 +186,11 @@ public class UserPo implements UserDetails {
         this.enabled = enabled;
     }
 
-    public List<UserRolePo> getRoleList() {
-        return roleList;
+    public UserRolePo getRole() {
+        return role;
     }
 
-    public void setRoleList(List<UserRolePo> roleList) {
-        this.roleList = roleList;
+    public void setRole(UserRolePo role) {
+        this.role = role;
     }
 }
