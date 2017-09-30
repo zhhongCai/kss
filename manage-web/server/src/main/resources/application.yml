@@ -13,6 +13,9 @@ ribbon:
     enabled: true
 
 spring:
+  devtools:
+    restart:
+      enabled: true
   jpa:
     show-sql: true
   thymeleaf:
