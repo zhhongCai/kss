@@ -11,6 +11,7 @@
     <modules>
         <module>kss-base-server</module>
         <module>kss-commons</module>
+        <module>kss-data-center</module>
         <module>data-import-sys</module>
         <module>data-parse-sys</module>
         <module>data-process-sys</module>
@@ -66,20 +67,20 @@
     </dependencyManagement>
 
     <repositories>
-        <repository>
+       <!-- <repository>
             <id>spring-snapshots</id>
             <name>Spring Snapshots</name>
             <url>http://repo.spring.io/libs-snapshot-local</url>
             <snapshots>
                 <enabled>true</enabled>
             </snapshots>
-        </repository>
+        </repository>-->
         <repository>
             <id>spring-snapshots-continuous</id>
             <name>Spring Snapshots Continuous</name>
             <url>http://repo.spring.io/libs-snapshot-continuous-local</url>
             <snapshots>
-                <enabled>true</enabled>
+                <enabled>false</enabled>
             </snapshots>
         </repository>
         <repository>
@@ -105,7 +106,7 @@
             <name>Spring Snapshots</name>
             <url>http://repo.spring.io/libs-snapshot-local</url>
             <snapshots>
-                <enabled>true</enabled>
+                <enabled>false</enabled>
             </snapshots>
         </pluginRepository>
         <pluginRepository>
