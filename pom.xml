@@ -74,7 +74,7 @@
             <snapshots>
                 <enabled>true</enabled>
             </snapshots>
-        </repository>-->
+        </repository>
         <repository>
             <id>spring-snapshots-continuous</id>
             <name>Spring Snapshots Continuous</name>
@@ -83,6 +83,7 @@
                 <enabled>false</enabled>
             </snapshots>
         </repository>
+        -->
         <repository>
             <id>spring-milestones</id>
             <name>Spring Milestones</name>

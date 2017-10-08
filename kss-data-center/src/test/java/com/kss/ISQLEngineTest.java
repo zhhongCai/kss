@@ -1,18 +1,18 @@
 /**
  * 
  */
-package com.kss.sqlengine;
+package com.kss;
 
 import com.kss.persistence.DataTypeDefinition;
+import com.kss.sqlengine.*;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.ApplicationContext;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.ArrayList;
@@ -21,14 +21,14 @@ import java.util.List;
 import static org.junit.Assert.fail;
 
 
+//@ContextConfiguration(locations={"classpath:*/*.xml"})
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
+@SpringBootTest(classes = Application.class, webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 public class ISQLEngineTest {
-	private static Logger log = LoggerFactory.getLogger(SQLEngine.class);
+	private static Logger log = LoggerFactory.getLogger(ISQLEngineTest.class);
 	private DbDataSource ds = null;
 
-	@Autowired
-	private ApplicationContext ctx;
+//	private ApplicationContext ctx;
 
 	@Before
 	public void setUp() throws Exception {
@@ -47,7 +47,7 @@ public class ISQLEngineTest {
 
 	@Test
 	public void testExecuteQuery() throws DBAccessCheckedException {
-		ISQLEngine sqlEngine = ctx.getBean(ISQLEngine.class);
+		ISQLEngine sqlEngine = new SQLEngine();
 		List<SqlParam> list = new ArrayList<SqlParam>();
 		SqlParam param = new SqlParam();
 		param.setDataType(DataTypeDefinition.DATA_TYPE_INTEGER);
