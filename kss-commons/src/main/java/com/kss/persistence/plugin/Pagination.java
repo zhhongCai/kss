@@ -1,6 +1,7 @@
 package com.kss.persistence.plugin;
 
-import com.kss.persistence.dialect.Dialect;
+import com.kss.persistence.dialect.Dialect.Type;
+import com.kss.persistence.dialect.MysqlPaginationDialect;
 import com.kss.persistence.dialect.OraclePaginationDialect;
 import com.kss.persistence.dialect.PaginationDialect;
 import org.apache.ibatis.executor.statement.StatementHandler;
@@ -23,7 +24,7 @@ import java.sql.Connection;
 public class Pagination extends AbstractInterceptor{
 	private final static Logger logger= LoggerFactory.getLogger(Pagination.class);
 	public Object intercept(Invocation invocation)throws Throwable{
-		Dialect.Type dialect;
+		Type dialect;
 		RowBounds rowBounds;
 		PaginationDialect paginationDialect;
 		StatementHandler statementHandler;
@@ -34,12 +35,14 @@ public class Pagination extends AbstractInterceptor{
 			rowBounds=(RowBounds)metaStatementHandler.getValue(ROWBOUNDS);//获取RoutingStatementHandler类中的delegate属性中的rowBounds属性对象
 			if(rowBounds==null||rowBounds==RowBounds.DEFAULT)return invocation.proceed();
 			try{
-				dialect=Dialect.Type.valueOf(((Configuration)metaStatementHandler.getValue(CONFIGURATION)).getVariables().getProperty("dialect").toUpperCase());
+				dialect= Type.valueOf(((Configuration)metaStatementHandler.getValue(CONFIGURATION)).getVariables().getProperty("dialect").toUpperCase());
 			}catch(Exception e){
-				dialect=Dialect.Type.ORACLE;
+				dialect= Type.ORACLE;
 				logger.warn("数据库方言未指定或指定的方言不存在，系统默认指定为数据库方言为：{}",dialect);
 			}
 			switch(dialect){//其它数据分页语言在此处添加
+				case MYSQL:
+					paginationDialect=new MysqlPaginationDialect();
 				default:
 					paginationDialect=new OraclePaginationDialect();
 			}

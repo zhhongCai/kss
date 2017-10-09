@@ -3,9 +3,11 @@
  */
 package com.kss.sqlengine;
 
+import com.kss.commons.util.CommonUtil;
 import com.kss.commons.util.EncryptDecryptUtil;
 import com.kss.persistence.atomikos.AtomikosDBHelper;
 import com.kss.persistence.atomikos.IDistDBHelper;
+import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -156,8 +158,8 @@ public class SQLEngine implements ISQLEngine {
 			result.setResult(getUpdateResult(params));
 		}catch (Exception e) {
 			log.error("执行失败 {}", e);
-			//result = new Result(Result.FAILURE);
-			//result.setResultMsg(CommonUtil.getExceptionDetail(e, 2000));
+			result = new Result(Result.FAILURE);
+			result.setResultMsg(CommonUtil.getExceptionDetail(e, 2000));
 			throw new DBAccessCheckedException(e);
 		}
 		
@@ -188,6 +190,9 @@ public class SQLEngine implements ISQLEngine {
 	 */
 	private Map<String, String> getUpdateResult(List<SqlParam> params){
 		Map<String, String> result = new HashMap<String, String>();
+		if(CollectionUtils.isEmpty(params)) {
+			return result;
+		}
 		for(SqlParam param : params){
 			if("out".equalsIgnoreCase(param.getInOut())){
 				result.put(param.getParamName(), param.getParamValue());

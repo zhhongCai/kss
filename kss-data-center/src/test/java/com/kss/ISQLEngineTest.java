@@ -8,12 +8,9 @@ import com.kss.sqlengine.*;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,23 +18,21 @@ import java.util.List;
 import static org.junit.Assert.fail;
 
 
-//@ContextConfiguration(locations={"classpath:*/*.xml"})
-@RunWith(SpringJUnit4ClassRunner.class)
-@SpringBootTest(classes = Application.class, webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
-public class ISQLEngineTest {
+public class ISQLEngineTest extends BaseJunit4Test {
 	private static Logger log = LoggerFactory.getLogger(ISQLEngineTest.class);
+
 	private DbDataSource ds = null;
 
-//	private ApplicationContext ctx;
+	@Autowired
+	private ISQLEngine sqlEngine = null;
 
 	@Before
 	public void setUp() throws Exception {
 		ds = new DbDataSource();
-		ds.setDriverClassName("com.mysql.jdbc.OracleDriver");
+		ds.setDriverClassName("com.mysql.jdbc.Driver");
 		ds.setUrl("jdbc:mysql://localhost:3306/manage-web");
 		ds.setUserName("manage-web");
 		ds.setPassword("manage-web");
-
 	}
 
 
@@ -47,7 +42,6 @@ public class ISQLEngineTest {
 
 	@Test
 	public void testExecuteQuery() throws DBAccessCheckedException {
-		ISQLEngine sqlEngine = new SQLEngine();
 		List<SqlParam> list = new ArrayList<SqlParam>();
 		SqlParam param = new SqlParam();
 		param.setDataType(DataTypeDefinition.DATA_TYPE_INTEGER);
@@ -60,7 +54,7 @@ public class ISQLEngineTest {
 		paramA.setDataType(DataTypeDefinition.DATA_TYPE_STRING);
 		paramA.setInOut("in");
 		paramA.setParamName("username");
-		paramA.setParamValue("2");
+		paramA.setParamValue("admin");
 		list.add(paramA);
 
 		SqlParam paramB = new SqlParam();
@@ -70,17 +64,34 @@ public class ISQLEngineTest {
 		paramB.setParamValue("2012-05-16 00:00:00");
 		list.add(paramB);
 
-		Result res = sqlEngine
-				.executeQuery(
-						"select * from base_user " +
-						"where id = #id# and state = #username# and create_time <= #createTime#",
-						list, ds);
-		log.debug("result:" + res.getResult());
+		Result res = sqlEngine.executeQuery("select * from base_user where id = #id# " +
+				" and username = #username# and create_time > #createTime#", list, ds);
+
+		log.info("result:" + res.getResult());
 	}
 
 	@Test
-	public void testExecuteUpdate() {
-		fail("Not yet implemented");
+	public void testExecuteUpdate() throws DBAccessCheckedException {
+		List<SqlParam> list = new ArrayList<SqlParam>();
+		SqlParam param = new SqlParam();
+		param.setDataType(DataTypeDefinition.DATA_TYPE_STRING);
+		param.setInOut("in");
+		param.setParamName("department");
+		param.setParamValue("testupdate");
+		list.add(param);
+
+		Result res = sqlEngine.executeUpdate("update base_user set department=#department# where id=1", list, ds);
+		log.info("result:" + res.getResult());
+	}
+
+	@Test
+	public void testCreateDb() throws DBAccessCheckedException {
+		Result res = sqlEngine.executeUpdate(
+				" DROP DATABASE IF EXISTS `database-test` ", null, ds);
+		log.info("result:{}, code={}", res.getResult(), res.getDbCode());
+		res = sqlEngine.executeUpdate(
+				" CREATE DATABASE `database-test`", null, ds);
+		log.info("result:{}, code={}", res.getResult(), res.getDbCode());
 	}
 
 	@Test
